@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Mapper.OrderPackageMapper">
+    <insert id="createPackage" parameterType="com.example.demo.pojo.OrderPackage"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO oms_order_package
+            (order_id, carrier_code, carrier_name, tracking_number, shipped_at, status)
+        VALUES
+            (#{orderId}, #{carrierCode}, #{carrierName}, #{trackingNumber}, #{shippedAt}, #{status})
+    </insert>
+</mapper>

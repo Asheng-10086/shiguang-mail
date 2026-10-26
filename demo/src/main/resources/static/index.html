@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7f5">
+  <title>拾光优选 - 发现日常好物</title>
+  <link rel="stylesheet" href="/css/store.css">
+</head>
+<body>
+  <div class="announcement">把喜欢的好物，带回日常 <span>·</span> 简单生活，认真挑选</div>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="拾光优选首页">
+      <span class="brand-mark">拾</span>
+      <span><strong>拾光优选</strong><small>GOOD THINGS, EVERY DAY</small></span>
+    </a>
+    <form id="search-form" class="search-box">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input id="search-input" type="search" placeholder="搜索你喜欢的好物" autocomplete="off" aria-label="搜索商品">
+      <button type="submit">搜索</button>
+    </form>
+    <nav class="header-actions" aria-label="主要操作">
+      <button class="text-action" data-action="orders"><span aria-hidden="true">▤</span><span>我的订单</span></button>
+      <button id="address-button" class="text-action" data-action="addresses" aria-label="收货地址" hidden><span aria-hidden="true">⌖</span><span>收货地址</span></button>
+      <button class="icon-action" data-action="cart" aria-label="购物车"><span aria-hidden="true">♧</span><i id="cart-count">0</i></button>
+      <button id="account-button" class="account-action" data-action="login">登录 / 注册</button>
+      <button id="profile-button" class="account-action" data-action="profile" hidden>账户中心</button>
+      <button id="admin-button" class="account-action" data-action="admin-panel" hidden>管理用户</button>
+      <button id="logout-button" class="account-action" data-action="logout" hidden>退出</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="eyebrow-dot"></span> GOOD THINGS, SLOW DAYS</span>
+        <h1>日常的小欢喜<br>从一件好物开始。</h1>
+        <p>认真挑选每一件，让生活多一点舒服、自在和灵感。</p>
+        <button class="primary-button" data-action="browse">去逛逛 <span aria-hidden="true">→</span></button>
+        <div class="hero-note"><span>✳</span> 用心挑选 · 让每一天更喜欢一点</div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div>
+        <div class="art-orbit orbit-two"></div>
+        <div class="art-sun"></div>
+        <div class="art-leaf leaf-one"></div>
+        <div class="art-leaf leaf-two"></div>
+        <div class="art-vase"><div class="vase-neck"></div><div class="vase-body"></div></div>
+        <div class="art-flower flower-one">✿</div>
+        <div class="art-flower flower-two">✿</div>
+        <div class="art-caption">a little joy<br>for your everyday</div>
+      </div>
+      <div class="hero-pagination"><span class="current"></span><span></span><span></span></div>
+    </section>
+
+    <section class="service-points" aria-label="服务特点">
+      <div><span class="service-icon">✧</span><span><strong>认真挑选</strong><small>品质好物，用心甄选</small></span></div>
+      <div><span class="service-icon">♡</span><span><strong>轻松购物</strong><small>简单几步，发现喜欢</small></span></div>
+      <div><span class="service-icon">↗</span><span><strong>安心支付</strong><small>支持支付宝订单支付</small></span></div>
+      <div><span class="service-icon">☼</span><span><strong>悦享日常</strong><small>让每件好物物有所值</small></span></div>
+    </section>
+
+    <section id="seckill-section" class="seckill-section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow muted-eyebrow">LIMITED-TIME DEALS</span>
+          <h2>限时秒杀 <span>·</span></h2>
+          <p id="seckill-caption">限时好价，正在为你加载。</p>
+        </div>
+        <div class="seckill-address">
+          <label for="seckill-address-select">秒杀收货地址</label>
+          <select id="seckill-address-select" aria-label="选择秒杀订单收货地址">
+            <option value="">请先登录并添加收货地址</option>
+          </select>
+          <button class="link-button" type="button" data-action="addresses">管理地址</button>
+        </div>
+      </div>
+      <div id="seckill-grid" class="seckill-grid" aria-live="polite">
+        <div class="loading-state"><span class="loader"></span>正在加载秒杀活动…</div>
+      </div>
+    </section>
+
+    <section id="products-section" class="products-section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow muted-eyebrow">THE LITTLE THINGS</span>
+          <h2>发现好物 <span>·</span></h2>
+          <p id="results-caption">为日常，挑一件喜欢的。</p>
+        </div>
+        <form id="category-form" class="category-filter">
+          <label for="category-id">按分类筛选</label>
+          <input id="category-id" type="number" min="1" placeholder="分类 ID">
+          <button type="submit">筛选</button>
+          <button type="button" id="clear-category" class="clear-filter">全部</button>
+        </form>
+      </div>
+      <div id="product-grid" class="product-grid" aria-live="polite">
+        <div class="loading-state"><span class="loader"></span>正在为你挑选好物…</div>
+      </div>
+    </section>
+
+    <section class="closing-note">
+      <span>✳</span>
+      <p>喜欢的东西，让日常闪闪发光。</p>
+      <span>✳</span>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="/"><span class="brand-mark">拾</span><span><strong>拾光优选</strong><small>GOOD THINGS, EVERY DAY</small></span></a>
+    <p>认真生活，从挑选一件喜欢的好物开始。</p>
+    <small>© 拾光优选 · 用心发现日常好物</small>
+  </footer>
+
+  <div id="product-dialog" class="modal-backdrop" hidden>
+    <section class="product-dialog modal-card" role="dialog" aria-modal="true" aria-labelledby="detail-name">
+      <button class="modal-close" data-action="close-product" aria-label="关闭">×</button>
+      <div id="detail-art" class="detail-art"></div>
+      <div class="detail-copy">
+        <span class="eyebrow muted-eyebrow">A LITTLE SOMETHING FOR YOU</span>
+        <h2 id="detail-name"></h2>
+        <p id="detail-description" class="detail-description"></p>
+        <strong id="detail-price" class="detail-price"></strong>
+        <p id="detail-stock" class="detail-stock"></p>
+        <button id="detail-add" class="primary-button full-button" data-action="add-detail">加入购物车 <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+  </div>
+
+  <div id="login-dialog" class="modal-backdrop" hidden>
+    <section class="login-dialog modal-card" role="dialog" aria-modal="true" aria-labelledby="login-title">
+      <button class="modal-close" data-action="close-login" aria-label="关闭">×</button>
+      <div class="login-emblem">拾</div>
+      <span class="eyebrow muted-eyebrow">WELCOME TO SHIGUANG</span>
+      <h2 id="login-title">欢迎回来</h2>
+      <p>登录后即可管理购物车与查看订单</p>
+      <form id="login-form">
+        <label class="field-label" for="phone-input">手机号</label>
+        <input id="phone-input" name="phone" type="tel" inputmode="numeric" maxlength="11" placeholder="请输入手机号" required>
+        <label class="field-label" for="code-input">短信验证码</label>
+        <div class="code-row"><input id="code-input" name="code" inputmode="numeric" maxlength="6" placeholder="请输入验证码" required><button id="send-code" type="button">获取验证码</button></div>
+        <button id="login-submit" class="primary-button full-button" type="submit">登录 / 注册 <span aria-hidden="true">→</span></button>
+      </form>
+      <small class="login-hint">开发环境验证码会在发送成功后提示；正式环境请接入短信服务。</small>
+      <button class="link-button" type="button" data-action="show-admin-login">管理员账号登录</button>
+      <form id="admin-login-form" hidden>
+        <label class="field-label" for="admin-username">管理员用户名</label>
+        <input id="admin-username" name="username" autocomplete="username" required>
+        <label class="field-label" for="admin-password">密码</label>
+        <input id="admin-password" name="password" type="password" autocomplete="current-password" required>
+        <button id="admin-login-submit" class="primary-button full-button" type="submit">管理员登录 <span aria-hidden="true">→</span></button>
+        <button class="link-button" type="button" data-action="show-user-login">返回手机号登录</button>
+      </form>
+    </section>
+  </div>
+
+  <div id="cart-dialog" class="modal-backdrop drawer-backdrop" hidden>
+    <aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div class="drawer-heading"><div><span class="eyebrow muted-eyebrow">YOUR LITTLE FINDS</span><h2 id="cart-title">购物车</h2></div><button class="modal-close" data-action="close-cart" aria-label="关闭">×</button></div>
+      <div id="cart-content" class="cart-content"></div>
+      <div class="cart-footer">
+        <div><span>已选商品合计</span><strong id="cart-total">¥0.00</strong></div>
+        <div class="checkout-address-heading">
+          <label class="field-label" for="checkout-address-select">收货地址</label>
+          <button class="link-button" type="button" data-action="addresses">管理地址</button>
+        </div>
+        <select id="checkout-address-select" aria-label="选择收货地址">
+          <option value="">请先添加收货地址</option>
+        </select>
+        <button id="checkout-button" class="primary-button full-button" data-action="checkout">提交订单并支付</button>
+        <button id="clear-cart" class="secondary-button" data-action="clear-cart">清空购物车</button>
+        <p>订单将使用所选地址生成收货信息快照。</p>
+      </div>
+    </aside>
+  </div>
+
+  <div id="addresses-dialog" class="modal-backdrop" hidden>
+    <section class="addresses-dialog modal-card" role="dialog" aria-modal="true" aria-labelledby="addresses-title">
+      <button class="modal-close" data-action="close-addresses" aria-label="关闭">×</button>
+      <span class="eyebrow muted-eyebrow">DELIVERY DETAILS</span>
+      <div class="address-heading">
+        <div>
+          <h2 id="addresses-title">收货地址</h2>
+          <p class="dialog-subtitle">管理你的配送信息；下单时会保存地址快照。</p>
+        </div>
+        <button class="primary-button" type="button" data-action="new-address">新增地址 <span aria-hidden="true">＋</span></button>
+      </div>
+      <div id="addresses-content" class="addresses-content"></div>
+      <form id="address-form" class="address-form" hidden>
+        <h3 id="address-form-title">新增收货地址</h3>
+        <div class="address-form-grid">
+          <div>
+            <label class="field-label" for="address-recipient">收件人</label>
+            <input id="address-recipient" name="recipient" maxlength="32" autocomplete="name" required>
+          </div>
+          <div>
+            <label class="field-label" for="address-phone">手机号</label>
+            <input id="address-phone" name="phone" type="tel" inputmode="numeric" maxlength="20" autocomplete="tel" required>
+          </div>
+          <div>
+            <label class="field-label" for="address-province">省</label>
+            <input id="address-province" name="province" maxlength="32" autocomplete="address-level1" required>
+          </div>
+          <div>
+            <label class="field-label" for="address-city">市</label>
+            <input id="address-city" name="city" maxlength="32" autocomplete="address-level2" required>
+          </div>
+          <div>
+            <label class="field-label" for="address-district">区 / 县</label>
+            <input id="address-district" name="district" maxlength="32" required>
+          </div>
+          <div class="address-detail-field">
+            <label class="field-label" for="address-detail">详细地址</label>
+            <input id="address-detail" name="detail" maxlength="255" autocomplete="street-address" placeholder="街道、门牌号等" required>
+          </div>
+        </div>
+        <label class="address-default-option"><input id="address-is-default" type="checkbox"> 设为默认地址</label>
+        <div class="address-form-actions">
+          <button class="primary-button" type="submit">保存地址</button>
+          <button class="secondary-button" type="button" data-action="cancel-address-edit">取消</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="orders-dialog" class="modal-backdrop" hidden>
+    <section class="orders-dialog modal-card" role="dialog" aria-modal="true" aria-labelledby="orders-title">
+      <button class="modal-close" data-action="close-orders" aria-label="关闭">×</button>
+      <div class="orders-heading">
+        <div>
+          <span class="eyebrow muted-eyebrow">YOUR PURCHASES</span>
+          <h2 id="orders-title">我的订单</h2>
+          <p class="dialog-subtitle">每一次挑选，都是给日常的小小心意。</p>
+        </div>
+        <button class="orders-refresh" type="button" data-action="refresh-orders">↻ 刷新订单</button>
+      </div>
+      <div class="order-filters" role="group" aria-label="订单筛选">
+        <button type="button" class="order-filter active" data-action="filter-orders" data-filter="all" aria-pressed="true">全部订单 <span id="all-orders-count">0</span></button>
+        <button type="button" class="order-filter" data-action="filter-orders" data-filter="pending" aria-pressed="false">待付款 <span id="pending-orders-count">0</span></button>
+      </div>
+      <p class="orders-hint">秒杀订单由后台异步创建；刚提交秒杀请求时若暂未显示，请稍后刷新。</p>
+      <div id="orders-content" class="orders-content"></div>
+    </section>
+  </div>
+
+  <div id="profile-dialog" class="modal-backdrop" hidden>
+    <section class="profile-dialog modal-card" role="dialog" aria-modal="true" aria-labelledby="profile-title">
+      <button class="modal-close" data-action="close-profile" aria-label="关闭">×</button>
+      <span class="eyebrow muted-eyebrow">YOUR ACCOUNT</span>
+      <h2 id="profile-title">账户资料</h2>
+      <div id="profile-summary" class="profile-summary"></div>
+      <form id="profile-form">
+        <label class="field-label" for="profile-username">用户名</label>
+        <input id="profile-username" name="username" maxlength="64">
+        <label class="field-label" for="profile-nickname">昵称</label>
+        <input id="profile-nickname" name="nickname" maxlength="64">
+        <label class="field-label" for="profile-phone">手机号</label>
+        <input id="profile-phone" name="phone" type="tel" maxlength="20">
+        <button class="primary-button full-button" type="submit">保存资料</button>
+      </form>
+      <form id="change-password-form">
+        <h3>修改密码</h3>
+        <label class="field-label" for="old-password">旧密码</label>
+        <input id="old-password" name="oldPassword" type="password" autocomplete="current-password" required>
+        <label class="field-label" for="new-password">新密码（至少 8 位）</label>
+        <input id="new-password" name="newPassword" type="password" minlength="8" autocomplete="new-password" required>
+        <button class="secondary-button" type="submit">修改密码</button>
+      </form>
+    </section>
+  </div>
+
+  <div id="admin-dialog" class="modal-backdrop" hidden>
+    <section class="admin-dialog modal-card" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+      <button class="modal-close" data-action="close-admin" aria-label="关闭">×</button>
+      <span class="eyebrow muted-eyebrow">ADMINISTRATION</span>
+      <h2 id="admin-title">用户账号管理</h2>
+      <p class="dialog-subtitle">可启用或禁用用户账号；状态会由后端在后续受保护请求中校验。</p>
+      <button class="primary-button admin-add-product-trigger" type="button" data-action="new-product">添加商品 <span aria-hidden="true">＋</span></button>
+      <form id="admin-product-form" class="admin-product-form" hidden>
+        <h3>新增商品</h3>
+        <div class="admin-product-grid">
+          <div>
+            <label class="field-label" for="product-name">商品名称</label>
+            <input id="product-name" name="name" maxlength="128" required>
+          </div>
+          <div>
+            <label class="field-label" for="product-brand-id">品牌 ID</label>
+            <input id="product-brand-id" name="brandId" type="number" min="1" step="1" required>
+          </div>
+          <div>
+            <label class="field-label" for="product-category-id">分类 ID</label>
+            <input id="product-category-id" name="categoryId" type="number" min="1" step="1" required>
+          </div>
+          <div>
+            <label class="field-label" for="product-price">价格</label>
+            <input id="product-price" name="price" type="number" min="0.01" step="0.01" required>
+          </div>
+          <div>
+            <label class="field-label" for="product-stock">库存</label>
+            <input id="product-stock" name="stock" type="number" min="0" step="1" required>
+          </div>
+          <div>
+            <label class="field-label" for="product-status">上架状态</label>
+            <select id="product-status" name="status" required>
+              <option value="1">上架</option>
+              <option value="0">下架</option>
+            </select>
+          </div>
+          <div class="admin-product-detail">
+            <label class="field-label" for="product-detail">商品详情</label>
+            <textarea id="product-detail" name="detail" rows="3" maxlength="2000" required></textarea>
+          </div>
+        </div>
+        <div class="admin-product-actions">
+          <button class="primary-button" type="submit">保存商品</button>
+          <button class="secondary-button" type="button" data-action="cancel-new-product">取消</button>
+        </div>
+      </form>
+      <button class="secondary-button admin-seckill-trigger" type="button" data-action="new-seckill">添加秒杀活动</button>
+      <form id="admin-seckill-form" class="admin-seckill-form" hidden>
+        <h3>新增秒杀活动</h3>
+        <div class="admin-product-grid">
+          <div class="admin-product-detail">
+            <label class="field-label" for="seckill-goods-id">选择已上架商品</label>
+            <select id="seckill-goods-id" name="goodsId" required>
+              <option value="">正在加载商品…</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="seckill-price">秒杀价格</label>
+            <input id="seckill-price" name="seckillPrice" type="number" min="0.01" step="0.01" required>
+          </div>
+          <div>
+            <label class="field-label" for="seckill-stock">秒杀库存</label>
+            <input id="seckill-stock" name="stock" type="number" min="1" step="1" required>
+          </div>
+          <div>
+            <label class="field-label" for="seckill-start-time">开始时间</label>
+            <input id="seckill-start-time" name="startTime" type="datetime-local" required>
+          </div>
+          <div>
+            <label class="field-label" for="seckill-end-time">结束时间</label>
+            <input id="seckill-end-time" name="endTime" type="datetime-local" required>
+          </div>
+        </div>
+        <div class="admin-product-actions">
+          <button class="primary-button" type="submit">保存秒杀活动</button>
+          <button class="secondary-button" type="button" data-action="cancel-new-seckill">取消</button>
+        </div>
+      </form>
+      <div id="admin-users-content" class="admin-users-content"></div>
+    </section>
+  </div>
+
+  <button id="chat-launcher" class="chat-launcher" type="button" aria-label="打开智能客服"><span aria-hidden="true">✆</span></button>
+
+  <section id="chat-panel" class="chat-panel" role="dialog" aria-modal="false" aria-label="智能客服" hidden>
+    <header class="chat-header">
+      <div>
+        <span class="chat-avatar" aria-hidden="true">拾</span>
+        <div><strong>智能客服</strong><small>拾光优选 · 为你答疑</small></div>
+      </div>
+      <button id="chat-close" class="chat-close" type="button" aria-label="关闭客服">×</button>
+    </header>
+    <div id="chat-messages" class="chat-messages" aria-live="polite"></div>
+    <div id="chat-quick" class="chat-quick">
+      <button type="button" data-quick="有什么好物推荐吗？">推荐商品</button>
+      <button type="button" data-quick="现在有什么秒杀活动？">秒杀活动</button>
+      <button type="button" data-quick="我的订单在哪里查看？">查订单</button>
+    </div>
+    <form id="chat-form" class="chat-form">
+      <input id="chat-input" type="text" placeholder="输入你的问题…" autocomplete="off" maxlength="500" aria-label="输入问题">
+      <button type="submit">发送</button>
+    </form>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/js/store.js" defer></script>
+</body>
+</html>

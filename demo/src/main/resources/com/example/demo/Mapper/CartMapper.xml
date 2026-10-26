@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Mapper.CartMapper">
+    <update id="updateCart" parameterType = "com.example.demo.pojo.Cart">
+        update oms_cart_item
+        <set>
+            <if test="cart.quantity != null">
+                quantity = #{cart.quantity}
+            </if>
+            <if test="cart.checked != null">
+                checked = #{cart.checked}
+            </if>
+        </set>
+        where id = #{cart.id} and member_id = #{memberId}
+    </update>
+
+    <select id="getCartlist" resultType="com.example.demo.pojo.Cart">
+        select * from oms_cart_item where member_id = #{memberId}
+    </select>
+
+    <insert id="creatProduct" parameterType="com.example.demo.pojo.Cart">
+        INSERT INTO oms_cart_item (member_id, product_id, product_name, product_price, quantity, checked)
+VALUES(#{memberId},#{productId},#{productName},#{productPrice},#{quantity},#{checked});
+    </insert>
+
+    <delete id="deleteCart" parameterType="com.example.demo.pojo.Cart">
+        delete from oms_cart_item where member_id = #{id}
+    </delete>
+
+    <select id="selectIdQuantity" resultType="com.example.demo.pojo.CartVoItem">
+        SELECT product_id, quantity
+        FROM oms_cart_item
+        WHERE checked = 0 AND member_id = #{memberId}
+    </select>
+    
+    <delete id="deleteCartByProductId" parameterType="com.example.demo.pojo.Cart">
+        delete from oms_cart_item where member_id = #{memberId} and product_id = #{productId}
+    </delete>
+
+</mapper>

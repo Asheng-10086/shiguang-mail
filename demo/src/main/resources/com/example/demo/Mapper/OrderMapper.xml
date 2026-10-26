@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Mapper.OrderMapper">
+    <insert id="creatOrder" parameterType="com.example.demo.pojo.Order">
+        INSERT INTO oms_order
+            (id, member_id, address_id, shipping_recipient, shipping_phone, shipping_province,
+             shipping_city, shipping_district, shipping_detail, order_sn, total_amount, pay_amount,
+             status, pay_type, creat_time)
+        VALUES
+            (#{id}, #{memberId}, #{addressId}, #{shippingRecipient}, #{shippingPhone}, #{shippingProvince},
+             #{shippingCity}, #{shippingDistrict}, #{shippingDetail}, #{orderSn}, #{totalAmount},
+             #{payAmount}, #{status}, #{payType}, NOW())
+    </insert>
+
+    <select id="getOrderList" resultType="com.example.demo.pojo.Order">
+        SELECT * FROM oms_order WHERE member_id = #{memberId}
+    </select>
+
+    <select id="getOrderItemById" resultType="com.example.demo.pojo.orderItem">
+        SELECT * FROM oms_order_item WHERE order_id = #{id}
+    </select>
+
+    <select id="getOrderItemsByOrderId" resultType="com.example.demo.pojo.orderItem">
+        SELECT * FROM oms_order_item WHERE order_id = #{orderId}
+    </select>
+
+    <insert id="createOrderItem" parameterType="com.example.demo.pojo.orderItem">
+        INSERT INTO oms_order_item
+            (id,order_id,product_id,product_name,product_price,product_quantity,total_price)
+        VALUES
+            (#{id},#{orderId},#{productId},#{productName},#{productPrice},#{productQuantity},#{totalPrice})
+    </insert>
+
+    <select id="getOrderByOrderSn" resultType="com.example.demo.pojo.Order">
+        select * from oms_order where order_sn = #{orderSn}
+    </select>
+
+    <select id="getOrderByOrderSnAndMemberId" resultType="com.example.demo.pojo.Order">
+        select * from oms_order where order_sn = #{orderSn} and member_id = #{memberId}
+    </select>
+
+    <update id="updateOrderStatusByOrderSn">
+        UPDATE oms_order
+        SET status = 1
+        WHERE order_sn = #{orderSn} AND status = 0
+    </update>
+
+    <update id="markOrderShipped">
+        UPDATE oms_order
+        SET status = 2
+        WHERE id = #{orderId} AND status = 1
+    </update>
+
+    <update id="confirmOrderReceipt">
+        UPDATE oms_order
+        SET status = 3
+        WHERE order_sn = #{orderSn}
+          AND member_id = #{memberId}
+          AND status = 2
+    </update>
+
+    <update id="cancelPendingOrder">
+        UPDATE oms_order
+        SET status = -1
+        WHERE order_sn = #{orderSn}
+          AND member_id = #{memberId}
+          AND status = 0
+    </update>
+
+    <select id="findUnpaidBefore" resultType="com.example.demo.pojo.Order">
+        SELECT * FROM oms_order
+        WHERE creat_time &lt; DATE_SUB(NOW(), INTERVAL 30 MINUTE)
+          AND status = 0
+    </select>
+</mapper>

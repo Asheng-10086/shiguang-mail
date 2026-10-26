@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Mapper.UserAddressMapper">
+    <select id="getAddressListByUserId" resultType="com.example.demo.pojo.UserAddress">
+        SELECT *
+        FROM user_address
+        WHERE user_id = #{userId}
+        ORDER BY is_default DESC, updated_at DESC, id DESC
+    </select>
+
+    <select id="getAddressByIdAndUserId" resultType="com.example.demo.pojo.UserAddress">
+        SELECT *
+        FROM user_address
+        WHERE id = #{id} AND user_id = #{userId}
+    </select>
+
+    <insert id="createAddress" parameterType="com.example.demo.pojo.UserAddress"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user_address
+            (user_id, recipient, phone, province, city, district, detail, is_default)
+        VALUES
+            (#{userId}, #{recipient}, #{phone}, #{province}, #{city}, #{district}, #{detail}, COALESCE(#{isDefault}, 0))
+    </insert>
+
+    <update id="updateAddress" parameterType="com.example.demo.pojo.UserAddress">
+        UPDATE user_address
+        SET recipient = #{recipient},
+            phone = #{phone},
+            province = #{province},
+            city = #{city},
+            district = #{district},
+            detail = #{detail},
+            is_default = COALESCE(#{isDefault}, 0)
+        WHERE id = #{id} AND user_id = #{userId}
+    </update>
+
+    <delete id="deleteAddressByIdAndUserId">
+        DELETE FROM user_address
+        WHERE id = #{id} AND user_id = #{userId}
+    </delete>
+
+    <update id="clearDefaultByUserId">
+        UPDATE user_address
+        SET is_default = 0
+        WHERE user_id = #{userId} AND is_default = 1
+    </update>
+
+    <update id="setDefaultAddress">
+        UPDATE user_address
+        SET is_default = 1
+        WHERE id = #{id} AND user_id = #{userId}
+    </update>
+</mapper>

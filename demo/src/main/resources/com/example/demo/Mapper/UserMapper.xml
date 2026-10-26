@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Mapper.UserMapper">
+  <select id="getAdminByUsername" resultType="com.example.demo.pojo.User">
+    SELECT id, username, password, nickname, phone, status, role, create_time
+    FROM pms_member
+    WHERE username = #{username} AND role = 'ADMIN'
+  </select>
+
+  <select id="getAlluser" resultType="com.example.demo.pojo.User">
+    SELECT id, username, nickname, phone, status, role, create_time
+    FROM pms_member
+  </select>
+
+  <select id="getUserByid" resultType="com.example.demo.pojo.User">
+    SELECT id, username, nickname, phone, status, role, create_time
+    FROM pms_member
+    WHERE id = #{id}
+  </select>
+
+  <select id="getAccountById" resultType="com.example.demo.pojo.User">
+    SELECT id, status, role
+    FROM pms_member
+    WHERE id = #{id}
+  </select>
+
+  <select id="lockUserForAddressUpdate" resultType="java.lang.Long">
+    SELECT id
+    FROM pms_member
+    WHERE id = #{id}
+    FOR UPDATE
+  </select>
+
+  <select id="getPasswordHashById" resultType="string">
+    SELECT password
+    FROM pms_member
+    WHERE id = #{id}
+  </select>
+
+  <select id="getActiveAdminIdsForUpdate" resultType="long">
+    SELECT id
+    FROM pms_member
+    WHERE role = 'ADMIN' AND status = 1
+    ORDER BY id
+    FOR UPDATE
+  </select>
+
+  <select id="getUserByPhone" resultType="com.example.demo.pojo.User">
+    SELECT id, username, nickname, phone, status, role, create_time
+    FROM pms_member
+    WHERE phone = #{phone}
+  </select>
+
+  <insert id="insert" parameterType="com.example.demo.pojo.User" useGeneratedKeys="true" keyProperty="id">
+    insert into pms_member
+        (username, password, nickname, phone, status, role, create_time)
+    values
+        (#{username}, #{password}, #{nickname}, #{phone}, #{status}, #{role}, #{createTime})
+  </insert>
+
+  <update id="updateUserById" parameterType="com.example.demo.pojo.User">
+    update pms_member
+    <set>
+      <if test="username != null">username = #{username},</if>
+      <if test="nickname != null">nickname = #{nickname},</if>
+      <if test="phone != null">phone = #{phone},</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="updateAccountStatus">
+    UPDATE pms_member
+    SET status = #{status}
+    WHERE id = #{id}
+  </update>
+
+  <update id="updatePassword">
+    UPDATE pms_member
+    SET password = #{newPasswordHash}
+    WHERE id = #{id} AND password = #{oldPasswordHash}
+  </update>
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.Mapper.ProductsMapper">
+    <select id="getProductsList" resultType="com.example.demo.pojo.Products">
+        SELECT * FROM pms_product WHERE status = 1
+    </select>
+
+    <select id="getAllProductsForIndex" resultType="com.example.demo.pojo.Products">
+        SELECT id, brand_id, category_id, name, price, stock, sale, detail, status
+        FROM pms_product
+    </select>
+
+    <select id="getProductById" resultType="com.example.demo.pojo.Products">
+        SELECT * FROM pms_product WHERE id = #{id}
+    </select>
+
+    <select id="getProductsByCategoryId" resultType="com.example.demo.pojo.Products">
+        SELECT * FROM pms_product WHERE category_id = #{categoryId} AND status = 1
+    </select>
+
+    <select id="getSeckillGoodsList" resultType="com.example.demo.pojo.SeckillGoods">
+        SELECT sg.id, sg.goods_id, sg.seckill_price, sg.start_time, sg.end_time, sg.stock,
+               CASE WHEN sg.start_time &gt; NOW() THEN 0 ELSE 1 END AS status,
+               sg.create_time, sg.update_time,
+               p.name AS product_name, p.detail AS product_detail, p.price AS product_price
+        FROM seckill_goods sg
+        INNER JOIN pms_product p ON p.id = sg.goods_id
+        WHERE p.status = 1 AND sg.end_time &gt;= NOW()
+        ORDER BY sg.start_time ASC
+    </select>
+
+    <insert id="addProducts" parameterType="com.example.demo.pojo.Products">
+        INSERT into pms_product (brand_id,category_id,name,price,stock,sale,detail,status) 
+VALUES(#{brandId},#{categoryId},#{name},#{price},#{stock},#{sale},#{detail},#{status})
+    </insert>
+
+     <select id="getSeckillGoodsById" resultType="com.example.demo.pojo.SeckillGoods">
+        SELECT *
+        FROM seckill_goods
+        WHERE id = #{id}
+    </select>
+
+    <insert id="creatSeckillOrder" parameterType="com.example.demo.pojo.SeckillOrder">
+        INSERT INTO seckill_order (
+            id,
+            user_id,
+            goods_id,
+            payable_amount,
+            pay_status,
+            create_time,
+            pay_time
+        ) VALUES (
+            #{id},
+            #{userId},
+            #{goodsId},
+            #{payableAmount},
+            #{payStatus},
+            #{createTime},
+            #{payTime}
+        )
+    </insert>
+
+    <select id="getSeckillOrderById" resultType="com.example.demo.pojo.SeckillOrder">
+        SELECT *
+        FROM seckill_order
+        WHERE id = #{id}
+    </select>
+
+    <update id="updateSeckillOrderPayStatus">
+        UPDATE seckill_order
+        SET pay_status = #{payStatus},
+            pay_time = CASE WHEN #{payStatus} = 1 THEN NOW() ELSE pay_time END
+        WHERE id = #{id}
+          AND pay_status = 0
+    </update>
+
+    <update id="updateSeckillStock">
+        UPDATE seckill_goods
+        SET stock = stock - 1
+        WHERE id = #{productId}
+        AND stock = #{stock}
+    </update>
+
+    <update id="restoreSeckillStock">
+        UPDATE seckill_goods
+        SET stock = stock + 1
+        WHERE id = #{goodsId}
+    </update>
+
+    <insert id="addSeckillProduct" parameterType="com.example.demo.pojo.SeckillGoods"
+        useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO seckill_goods (
+            goods_id,
+            seckill_price,
+            start_time,
+            end_time,
+            stock,
+            status,
+            create_time,
+            update_time
+        ) VALUES (
+            #{goodsId},
+            #{seckillPrice},
+            #{startTime},
+            #{endTime},
+            #{stock},
+            #{status},
+            #{createTime},
+            #{updateTime}
+        )
+    </insert>
+
+    <update id = "updateStock">
+        UPDATE pms_product
+        SET stock = stock - #{quantity}
+        WHERE id = #{productId}
+        AND stock >= #{quantity}
+    </update>
+
+    <update id="restoreStock">
+        UPDATE pms_product
+        SET stock = stock + #{quantity}
+        WHERE id = #{productId}
+          AND #{quantity} > 0
+    </update>
+
+</mapper>

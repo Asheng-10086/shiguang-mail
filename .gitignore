@@ -1,0 +1,25 @@
+# 敏感配置（密钥，绝不上传）
+.env
+*.env
+application-local.properties
+application-*.local.properties
+
+# Java / Maven
+demo/target/
+*.class
+*.jar
+*.war
+!.mvn/wrapper/maven-wrapper.jar
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# IDE / 系统
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
