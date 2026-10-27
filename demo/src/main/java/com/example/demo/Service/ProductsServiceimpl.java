@@ -116,6 +116,7 @@ public class ProductsServiceimpl implements ProductsService{
 
                     if(records == null || records.isEmpty()){
                         continue;
+                         
                     }
 
                     for(MapRecord<String,Object,Object> record : records){
